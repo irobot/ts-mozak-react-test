@@ -176,7 +176,11 @@ export class OrbitControls extends THREE.EventDispatcher {
     this.keys = {LEFT: 37, UP: 38, RIGHT: 39, BOTTOM: 40};
 
     // Mouse buttons
-    this.mouseButtons = {ORBIT: THREE.MOUSE.LEFT, ZOOM: THREE.MOUSE.MIDDLE, PAN: THREE.MOUSE.RIGHT};
+    this.mouseButtons = {
+      ORBIT: THREE.MOUSE.LEFT,
+      ZOOM: THREE.MOUSE.MIDDLE,
+      PAN: THREE.MOUSE.RIGHT
+    };
 
     // for reset
     this.target0 = this.target.clone();
@@ -225,8 +229,7 @@ export class OrbitControls extends THREE.EventDispatcher {
     this.domElement.addEventListener( 'touchstart', this.onTouchStartFn, false );
     this.domElement.addEventListener( 'touchend', this.onTouchEndFn, false );
     this.domElement.addEventListener( 'touchmove', this.onTouchMoveFn, false );
-
-    this.window.addEventListener( 'keydown', this.onKeyDownFn, false );
+    this.domElement.addEventListener( 'keydown', this.onKeyDownFn, false );
 
     // force an update at start
     this.update();
@@ -316,6 +319,8 @@ export class OrbitControls extends THREE.EventDispatcher {
 
   onMouseUp = ( event: ThreeEvent ) => {
     if ( this.enabled === false ) { return; }
+    event.preventDefault();
+    event.stopPropagation();
     document.removeEventListener( 'mousemove', this.onMouseMove, false );
     document.removeEventListener( 'mouseup', this.onMouseUp, false );
 
@@ -391,10 +396,10 @@ export class OrbitControls extends THREE.EventDispatcher {
       case 2: {
         if ( this.enableZoom === false ) { return; }
 
-        var dx = event.touches[0].pageX - event.touches[1].pageX;
-        var dy = event.touches[0].pageY - event.touches[1].pageY;
+        const dx = event.touches[0].pageX - event.touches[1].pageX;
+        const dy = event.touches[0].pageY - event.touches[1].pageY;
 
-        var distance = Math.sqrt( dx * dx + dy * dy );
+        const distance = Math.sqrt( dx * dx + dy * dy );
         this.dollyStart.set( 0, distance );
         this.state = STATE.TOUCH_DOLLY;
         break;
@@ -451,10 +456,10 @@ export class OrbitControls extends THREE.EventDispatcher {
         if ( this.enableZoom === false ) { return; }
         if ( this.state !== STATE.TOUCH_DOLLY ) { return; } // is this needed?...
 
-        var dx = event.touches[0].pageX - event.touches[1].pageX;
-        var dy = event.touches[0].pageY - event.touches[1].pageY;
+        const dx = event.touches[0].pageX - event.touches[1].pageX;
+        const dy = event.touches[0].pageY - event.touches[1].pageY;
 
-        var distance = Math.sqrt( dx * dx + dy * dy );
+        const distance = Math.sqrt( dx * dx + dy * dy );
 
         this.dollyEnd.set( 0, distance );
 
@@ -536,7 +541,7 @@ export class OrbitControls extends THREE.EventDispatcher {
     // rotate offset back to "camera-up-vector-is-up" space
     this.updateOffset.applyQuaternion( this.updateQuatInverse );
 
-    position.copy( this.target ).add( this.updateOffset );
+    this.camera.position.copy( this.target ).add( this.updateOffset );
 
     this.camera.lookAt( this.target );
 
@@ -593,7 +598,7 @@ export class OrbitControls extends THREE.EventDispatcher {
       // perspective
       const position = camera.position;
       this.panInternalOffset.copy( position ).sub( this.target );
-      var targetDistance = this.panInternalOffset.length();
+      let targetDistance = this.panInternalOffset.length();
 
       // half of the fov is center to top of screen
       targetDistance *= Math.tan( ( camera.fov / 2 ) * Math.PI / 180.0 );
@@ -672,10 +677,10 @@ export class OrbitControls extends THREE.EventDispatcher {
     this.domElement.removeEventListener( 'touchend', this.onTouchEndFn, false );
     this.domElement.removeEventListener( 'touchmove', this.onTouchMoveFn, false );
 
-    document.removeEventListener( 'mousemove', this.onMouseMoveFn, false );
-    document.removeEventListener( 'mouseup', this.onMouseUpFn, false );
+    this.domElement.removeEventListener( 'mousemove', this.onMouseMoveFn, false );
+    this.domElement.removeEventListener( 'mouseup', this.onMouseUpFn, false );
 
-    this.window.removeEventListener( 'keydown', this.onKeyDownFn, false );
+    this.domElement.removeEventListener( 'keydown', this.onKeyDownFn, false );
   }
 
   reset(): void {
