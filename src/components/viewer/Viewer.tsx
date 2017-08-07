@@ -7,7 +7,7 @@ import './Viewer.css';
 import SceneRenderer from '../../scene/renderer';
 import {Scene} from 'three';
 import createLines from '../../scene/random-lines';
-import Object3 from '../three/object';
+import SceneObject from '../scene/scene-object';
 
 export interface Props {
   name: string;
@@ -54,15 +54,17 @@ class Viewer extends React.Component<Props, State> {
     const {width, height, mouseX, mouseY, phi, theta} = this.state;
 
     const lines = createLines().map((line, idx) =>
-      <Object3 renderer={this.renderer} object3d={line} key={idx} />
+      <SceneObject renderer={this.renderer} object3d={line} key={idx} />
     );
 
     return (
       <div className="container">
         <div>
-          Hello {name} width: {width} height {height} mouse: {mouseX.toFixed(2)}, {mouseY.toFixed(2)}, {phi} {theta}
+          width: {width} height {height} mouse: {mouseX.toFixed(2)}, {mouseY.toFixed(2)}, {phi} {theta}
         </div>
-        <div ref={e => this.setElement(e)} className="viewer item"/>
+        <div ref={e => this.setElement(e)} className="viewer item">
+          Hello {name}
+        </div>
         <div>{lines}</div>
       </div>
     );

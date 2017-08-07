@@ -11,7 +11,7 @@ export interface Props {
   object3d: Object3D;
 }
 
-class Object3 extends React.Component<Props, object> {
+class SceneObject extends React.Component<Props, object> {
   componentDidMount() {
     this.props.renderer.addToScene(this.props.object3d);
   }
@@ -23,4 +23,4 @@ class Object3 extends React.Component<Props, object> {
   }
 }
 
-export default Object3;
+export default SceneObject;

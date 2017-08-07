@@ -4,7 +4,9 @@ type Vector3 = {
 
 type Node = {
   id: number,
-  position: Vector3
+  position: Vector3,
+  children: Node[],
+  parent?: Node
 };
 
 type Edge = {
@@ -33,4 +35,4 @@ type ConsensusNeuron = {
   nodes: ConsensusNode[]
 };
 
-export {ConsensusNeuron, Edge, Neuron, Node, Vector3};
+export {ConsensusNeuron, ConsensusNode, Edge, Neuron, Node, Vector3};

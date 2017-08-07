@@ -11,5 +11,5 @@ const $ = enzyme.shallow;
 
 it( 'renders the correct thing', () => {
   const comp = $( <Viewer name="Jean Luc Picard"/> );
-  expect( comp.find( '.viewer' ).text() ).toEqual( 'Hello Jean Luc Picard' );
+  expect( comp.find( '.viewer' ).text() ).toContain( 'Hello Jean Luc Picard' );
 } );
