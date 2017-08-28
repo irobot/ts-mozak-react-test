@@ -10,7 +10,7 @@ const middleware: Middleware =
     // Only send state changes to be saved if this is not
     // the time at which we initialize the state.
     if (isLoadAction) {
-      fetch('/data/batch_520260582_1493058771041/recon_uid_426.json')
+      fetch('/data/inputs/batch_484645000_484645000_1502892188269/recon_uid_70.json')
         .then(response => response.json())
         .then(json => dispatch(neuronLoaded(json)));
     }

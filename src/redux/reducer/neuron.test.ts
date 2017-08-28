@@ -1,8 +1,11 @@
 import {neuronLoadedReducer, NeuronState} from './neuron';
 import {ConsensusNode} from '../../type/neuron';
+import {Geometry} from 'three';
 
 const makeEmptyState = (): NeuronState => ({
-  neuron: { nodes: [], edges: [] }
+  neuron: { nodes: [], edges: [] },
+  branches: [],
+  geometry: { segments: new Geometry() }
 });
 
 const makeConsensusNode = (id: number, parent?: number): ConsensusNode => ({

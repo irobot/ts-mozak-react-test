@@ -16,13 +16,13 @@ const dispatchToProps = {
 const stateProps = returntypeof(mapStateToProps);
 type AppProps = typeof stateProps & typeof dispatchToProps;
 
-const App: React.StatelessComponent<AppProps> = props => {
+const App: React.StatelessComponent<AppProps> = ({loadNeuron}) => {
   return (
     <div className="App container">
       <div className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <h2>Welcome to React</h2>
-        <button onClick={e => props.loadNeuron()}>Load</button>
+        <button onClick={e => loadNeuron()}>Load</button>
       </div>
       <Viewer name="Hi"/>
     </div>
