@@ -22,7 +22,9 @@ const App: React.StatelessComponent<AppProps> = ({loadNeuron}) => {
       <div className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <h2>Welcome to React</h2>
-        <button onClick={e => loadNeuron()}>Load</button>
+        <button onClick={e => loadNeuron(70)}>Load 70</button>
+        <button onClick={e => loadNeuron(827)}>Load 827</button>
+        <button onClick={e => loadNeuron(2933)}>Load 2933</button>
       </div>
       <Viewer name="Hi"/>
     </div>

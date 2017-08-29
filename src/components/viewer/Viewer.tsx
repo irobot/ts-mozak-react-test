@@ -4,7 +4,7 @@ import {State} from '../../redux/state';
 import { NeuronState } from '../../redux/reducer/neuron';
 import './Viewer.css';
 import SceneRenderer from '../../scene/renderer';
-import {Scene} from 'three';
+import { Color, LineBasicMaterial, Material, Scene } from 'three';
 import createLines from '../../scene/neuron-lines';
 // import createLines from '../../scene/random-lines';
 import SceneObject from '../scene/scene-object';
@@ -26,6 +26,8 @@ class Viewer extends React.Component<Props, ViewerState> {
 
   private renderer: SceneRenderer;
   private element: HTMLElement;
+  private material: Material;
+  private highlightMaterial: Material;
 
   componentDidMount() {
     if (this.element) {
@@ -41,6 +43,9 @@ class Viewer extends React.Component<Props, ViewerState> {
   constructor(props: Props) {
     super(props);
     this.state = {width: 0, height: 0, mouseX: 0, mouseY: 0, phi: 0, theta: 0};
+    const r = Math.random;
+    this.material = new LineBasicMaterial({ color: new Color(r(), r(), r()).getHexString()});
+    this.highlightMaterial = new LineBasicMaterial({ color: 'yellow' });
     this.renderer = new SceneRenderer(new Scene(), ({x, y, z}) => {
       this.setState({mouseX: x, mouseY: y});
     });

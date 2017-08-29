@@ -70,10 +70,11 @@ export const selectBranches = (nodes: Node[]): Node[][] => {
   const branches: Node[][] = [];
 
   // Traverse the tree starting from a leaf branch.
-  // Keep track o a counter each time we go through a branch node.
+  // Keep track of a counter each time we go through a branch node.
   const countPassedThrough = new Map<number, number>();
   const visitCount = (node: Node) => countPassedThrough.get(node.id) || 0;
   const visitsLeft = (node: Node) => node.children.length - visitCount(node);
+  const visit = (node: Node) => countPassedThrough.set(node.id, visitCount(node) + 1);
 
   while (leafNodes.length > 0) {
       const branch: Node[] = [];
@@ -85,9 +86,18 @@ export const selectBranches = (nodes: Node[]): Node[][] => {
       // into a flat segment (branch), as all of its child branches have already
       // been processed.
       while (node && (visitsLeft(node) < 2)) {
-          branch.push(node);
-          // tslint:disable-next-line
-          node = node.parent && nodeMap.get(node.parent.id);
+          if ((visitCount(node) > 0) && (visitsLeft(node) === 1)) {
+            // This is a branch node, and all of its child branches
+            // have been chopped up. So now it becomes a new leaf node.
+            // NOTE: This is to purposefully cut segments at all branch points.
+            leafNodes.push(node);
+            visit(node);
+            break;
+          } else {
+            branch.push(node);
+            // tslint:disable-next-line
+            node = node.parent && nodeMap.get(node.parent.id);
+          }
       }
 
       if (node && (visitsLeft(node) > 1)) {
@@ -95,7 +105,7 @@ export const selectBranches = (nodes: Node[]): Node[][] => {
           // descendents.
           // Add node to current segment and update visit counter.
           branch.push(node);
-          countPassedThrough.set(node.id, visitCount(node) + 1);
+          visit(node);
       }
 
       // Minimum of two nodes, so we can form at least one edge.

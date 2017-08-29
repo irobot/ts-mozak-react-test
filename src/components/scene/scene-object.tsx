@@ -3,7 +3,7 @@
  */
 
 import * as React from 'react';
-import {Object3D} from 'three';
+import { Object3D } from 'three';
 import SceneRenderer from '../../scene/renderer';
 
 export interface Props {
